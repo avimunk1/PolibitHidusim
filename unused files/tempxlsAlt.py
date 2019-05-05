@@ -3,10 +3,9 @@
 class sumeraPolicieshandler():
     """docstring for ."""
 
-    def __init__(sumeraPoliciesObj,objId):
-        print('in int',objId)
-        sumeraPoliciesObj.sobjId=objId
-    #    sumeraPoliciesObj.id=runningCount
+    def __init__(sumeraPoliciesObj):
+        myid=id(sumeraPoliciesObj)
+        sumeraPoliciesObj.sobjId=myid
         sumeraPoliciesObj.sumeraEgentId =sumeraEgentId
         sumeraPoliciesObj.sumeraAnefId=sumeraAnefId
         sumeraPoliciesObj.sumeraPolicyIdPreviuesYear=sumeraPolicyIdPreviuesYear
@@ -23,8 +22,7 @@ class sumeraPolicieshandler():
         sumeraPoliciesObj.sumeraLastYearPremia=sumeraLastYearPremia
         sumeraPoliciesObj.sumeraThisYearPremia=sumeraThisYearPremia
         sumeraPoliciesObj.sumeraRenewErrorDescrption=sumeraRenewErrorDescrption
-    #    runningCount=runningCount+1
-        #return(1)
+        #print(sumeraPoliciesObj.sobjId)
 
 
 # all fields to be in use
@@ -70,9 +68,10 @@ wws = readWB.active
 excelLine=1
 excelColmn=0
 mobilePhone=''
+objList=dict()
+sumerainfo=list()
 
 for row in wws.values:
-    print('strt',excelColmn)
     sumeraEgentId=row[excelColmn]
     excelColmn=excelColmn+1
     sumeraAnefId=row[excelColmn]
@@ -102,8 +101,21 @@ for row in wws.values:
     sumeraThisYearPremia=row[excelColmn]
     excelColmn=excelColmn+1
     sumeraRenewErrorDescrption=row[excelColmn]
-    uid=str(sumeraPolicyIdThisYear)+str(sumeraAnefId)
-    myobject=sumeraPolicieshandler(uid)
-    print('this is my objet id', myobject.sobjId)
     excelLine=excelLine+1
     excelColmn=0
+    uid=str(sumeraPolicyIdThisYear)+str(sumeraAnefId)
+
+    myobject=sumeraPolicieshandler()
+    sumerainfo[0]=uid
+    sumerainfo[1]=myobject.sumeraThisYearPremia
+
+
+
+    #mykey=myobject.sobjId
+    #objList[mykey]=mykey
+    #objList[uid]=mykey
+a=sumerainfo.find('739135677919730')
+#myrefrense=objList['739135677919730']
+#a=myobject.sumeraEgentId
+#a=get_objects()
+#print(a)

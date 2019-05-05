@@ -117,10 +117,15 @@ def phoneSplitter(phones): #handle the column "טלפונים" to get a valib mo
                         return(mobilePhone)
                         exit()
 
+import sumeraGetData as SD
+s=SD.main()
+a=SD.objList['739135677919730']
+print(a.sumeraThisYearPremia)
+
 
 #file hendling
 outPutRute='/Outputs'
-inputFile="BafiExportConverted.xlsx"
+inputFile="BafiExportConverted_short.xlsx"
 outPutFile="fixedBafi.xlsx"
 
 try:
@@ -241,7 +246,7 @@ for row in wws.values:
     d = rws.cell(row=excelLine, column=excelColmn, value=prmia)
     excelColmn=excelColmn+1
     d = rws.cell(row=excelLine, column=excelColmn, value=veicleType)
-    excelColmn=excelColmn+1    
+    excelColmn=excelColmn+1
     d = rws.cell(row=excelLine, column=excelColmn, value=SubAnaf)
     excelColmn=excelColmn+1
     d = rws.cell(row=excelLine, column=excelColmn, value=carLicenessPlate)
@@ -282,6 +287,13 @@ for row in wws.values:
         d = rws.cell(row=excelLine, column=excelColmn, value='mobilePhone')
     else:
         d = rws.cell(row=excelLine, column=excelColmn, value=mobilePhone)
+
+        #sdkey=str(anafID)+str(policyNumber)
+        sdkey=str(policyNumber)+str(anafID)
+        #sdkey='739135677919730'
+        spremia=SD.objList[sdkey]
+        d = rws.cell(row=excelLine, column=excelColmn, value=spremia.sumeraThisYearPremia)
+        excelColmn=excelColmn+1
     excelColmn=excelColmn+1
     excelLine=excelLine+1
     excelColmn=1
