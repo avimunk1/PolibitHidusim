@@ -1,7 +1,7 @@
 #this utility gets a csv export from Bafi and create an xls
 # it handles the phones that are in one column in the original file
 
-# all fiekds to be in use
+# all fields to be in use
 status=''
 customerName=''
 customerID=''
@@ -34,6 +34,7 @@ crmRepName=''
 salesRepName=''
 comments=''
 policyhandkerName=''
+LocalsumeraLastYearPremia=''
 policy=list()
 
 def checkMobilePhone(phone): #check numbers and retren the ststus
@@ -52,7 +53,7 @@ def phoneSplitter(phones): #handle the column "טלפונים" to get a valib mo
     phoneSplit=list()
     phoneStr=phones
     phone1=''
-    #print('debug',phoneStr)
+
     chrcount=0
     mobilePhone=''
     status=''
@@ -73,7 +74,6 @@ def phoneSplitter(phones): #handle the column "טלפונים" to get a valib mo
                 status=checkMobilePhone(phone1)
                 if status=='0':
                     mobilePhone=phone1
-                    #print('t1',mobilePhone)
                     return(mobilePhone)
                     exit()
                 else:
@@ -96,7 +96,6 @@ def phoneSplitter(phones): #handle the column "טלפונים" to get a valib mo
         status=checkMobilePhone(phone02)
         if status=='0':
             mobilePhone=phone02
-            #print('t2',mobilePhone)
             return(mobilePhone)
             exit()
         else:
@@ -104,7 +103,6 @@ def phoneSplitter(phones): #handle the column "טלפונים" to get a valib mo
             status=checkMobilePhone(phone03)
             if status=='0':
                 mobilePhone=phone03
-                #print('t3',mobilePhone)
                 return(mobilePhone)
                 exit()
             else:
@@ -113,19 +111,18 @@ def phoneSplitter(phones): #handle the column "טלפונים" to get a valib mo
                     status=checkMobilePhone(phone04)
                     if status=='0':
                         mobilePhone=phone04
-                        #print('t4',mobilePhone)
                         return(mobilePhone)
                         exit()
 
 import sumeraGetData as SD
 s=SD.main()
-a=SD.objList['739135677919730']
-print(a.sumeraThisYearPremia)
+#a=SD.objList['739135677919730']
+#print(a.sumeraThisYearPremia)
 
 
 #file hendling
 outPutRute='/Outputs'
-inputFile="BafiExportConverted_short.xlsx"
+inputFile="BafiExportConverted.xlsx"
 outPutFile="fixedBafi.xlsx"
 
 try:
@@ -213,7 +210,7 @@ for row in wws.values:
     excelColmn=excelColmn+1
     policyhandkerName=row[excelColmn]
     mobilePhone=phoneSplitter(phones) # get a valid mobilePhone
-    #print('returened',mobilePhone)
+
 
     #writing to the outPutFile and save
     excelColmn=1
@@ -284,18 +281,31 @@ for row in wws.values:
     d = rws.cell(row=excelLine, column=excelColmn, value=policyhandkerName)
     excelColmn=excelColmn+1
     if excelLine==1:
-        d = rws.cell(row=excelLine, column=excelColmn, value='mobilePhone')
-    else:
+        mobilePhone='מספר נייד'
         d = rws.cell(row=excelLine, column=excelColmn, value=mobilePhone)
+        excelColmn=excelColmn+1
 
-        #sdkey=str(anafID)+str(policyNumber)
-        sdkey=str(policyNumber)+str(anafID)
-        #sdkey='739135677919730'
-        spremia=SD.objList[sdkey]
-        d = rws.cell(row=excelLine, column=excelColmn, value=spremia.sumeraThisYearPremia)
+        d = rws.cell(row=excelLine, column=excelColmn, value='sumeraThisYearPremia')
         excelColmn=excelColmn+1
     excelColmn=excelColmn+1
+    else:
+        d = rws.cell(row=excelLine, column=excelColmn, value=mobilePhone)
+        excelColmn=excelColmn+1
+
+        sdkey=str(policyNumber)+str(anafID) # adding sumera "fileds" if exsist
+        spremia=SD.objList
+        if sdkey in spremia:
+            spremia=SD.objList[sdkey]
+            d = rws.cell(row=excelLine, column=excelColmn, value=spremia.sumeraThisYearPremia)
+            excelColmn=excelColmn+1
+            print('find prmia', spremia.sumeraThisYearPremia)
+
+        else:
+            #print('missing key',sdkey)
+            a=1+1
+
+
+    #print(excelLine,mobilePhone,customerName) #this is only to disply something to the user
     excelLine=excelLine+1
     excelColmn=1
-    print(excelLine,mobilePhone,customerName,phones) #this is only to disply something to the user
 writeWB.save('Outputs/'+outPutFile)

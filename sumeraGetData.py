@@ -101,15 +101,17 @@ def main():
         sumeraLastYearPremia=row[excelColmn]
         excelColmn=excelColmn+1
         sumeraThisYearPremia=row[excelColmn]
+
         excelColmn=excelColmn+1
         sumeraRenewErrorDescrption=row[excelColmn]
+
         excelLine=excelLine+1
         excelColmn=0
 
-        uid=str(sumeraPolicyIdThisYear)+str(sumeraAnefId)
+    #    uid=str(sumeraPolicyIdThisYear)+str(sumeraAnefId)
+        uid=str(sumeraPolicyIdPreviuesYear)+str(sumeraAnefId)
+        print('this is uid',uid)
         mykey=sumeraPolicieshandler()
         objList[uid]=mykey
 
-    a=objList['739135677919730']
-
-    print('this is my print',objList)
+    #a=objList['739135677919730']
