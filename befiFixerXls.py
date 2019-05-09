@@ -287,12 +287,12 @@ for row in wws.values:
 
         d = rws.cell(row=excelLine, column=excelColmn, value='sumeraThisYearPremia')
         excelColmn=excelColmn+1
-    excelColmn=excelColmn+1
     else:
         d = rws.cell(row=excelLine, column=excelColmn, value=mobilePhone)
         excelColmn=excelColmn+1
 
         sdkey=str(policyNumber)+str(anafID) # adding sumera "fileds" if exsist
+        #print(sdkey)
         spremia=SD.objList
         if sdkey in spremia:
             spremia=SD.objList[sdkey]
