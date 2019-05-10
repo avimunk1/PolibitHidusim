@@ -115,9 +115,7 @@ def phoneSplitter(phones): #handle the column "טלפונים" to get a valib mo
                         exit()
 
 import sumeraGetData as SD
-s=SD.main()
-#a=SD.objList['739135677919730']
-#print(a.sumeraThisYearPremia)
+
 
 
 #file hendling
@@ -144,8 +142,10 @@ wws = readWB.active
 excelLine=1
 excelColmn=1
 mobilePhone=''
-
+totalRowsCount=0
+premiaFoundCount=0
 for row in wws.values:
+    totalRowsCount=totalRowsCount+1
     status=row[excelColmn]
     excelColmn=excelColmn+1
     customerName=row[excelColmn]
@@ -290,22 +290,18 @@ for row in wws.values:
     else:
         d = rws.cell(row=excelLine, column=excelColmn, value=mobilePhone)
         excelColmn=excelColmn+1
-
-        sdkey=str(policyNumber)+str(anafID) # adding sumera "fileds" if exsist
-        #print(sdkey)
+        sdkey=str(policyNumber)+str(anafID) # adding sumera "fileds" if exsist note the key is last year policy as this is what Baffi has
         spremia=SD.objList
         if sdkey in spremia:
             spremia=SD.objList[sdkey]
             d = rws.cell(row=excelLine, column=excelColmn, value=spremia.sumeraThisYearPremia)
             excelColmn=excelColmn+1
-            print('find prmia', spremia.sumeraThisYearPremia)
+            #print('find prmia', spremia.sumeraThisYearPremia)
+            premiaFoundCount=premiaFoundCount+1
 
-        else:
-            #print('missing key',sdkey)
-            a=1+1
-
-
-    #print(excelLine,mobilePhone,customerName) #this is only to disply something to the user
     excelLine=excelLine+1
     excelColmn=1
+print('==== E N D ====')
+print('Total rows found = ',totalRowsCount)
+print('sumera premia found= ',premiaFoundCount)
 writeWB.save('Outputs/'+outPutFile)
